@@ -37,6 +37,10 @@ def inputs(choice: int):
         i2 = float(input())
         print('Input second point.')
         i3 = float(input())
+        print('Input accuracy to nearest decimal.')
+        i4 = int(input())
+        tmp = [i1, i2, i3, i4]
+        dict = tmp
     return dict
 
 def bisection(dict):
@@ -63,7 +67,18 @@ def newton(dict):
     return (dict[0].subs(x, dict[1]))
 
 def secant(dict):
-    pass
+    x = symbols('x')
+    der = diff(dict[0])
+    if abs(der.subs(x, dict[2])) <= (10**(-dict[3])):
+        return dict[0].subs(x, dict[2])
+    else:
+        ders1 = der.subs(x, dict[1])
+        ders2 = der.subs(x, dict[2])
+        tmp = dict[2] - ((dict[2] - dict[1]) / (ders2 - ders1))*(ders2)
+        dict[1] = dict[2]
+        dict[2] = tmp
+        return secant(dict)
+
 
 
 def main():
@@ -74,6 +89,6 @@ def main():
     elif(choice == 1):
         return newton(dict)
     elif(choice == 2):
-        pass
+        return secant(dict)
 
 print(main())
