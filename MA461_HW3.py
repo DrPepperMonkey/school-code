@@ -3,7 +3,7 @@ from typing import List, Tuple
 from sympy import *
 
 
-def choice():
+def choices():
     print('Choose an option below: \n [0]: Biscetion \n [1]: Newton\'s \n [2]: Secant')
     return (int(input()))
 
@@ -67,7 +67,7 @@ def secant(dict):
 
 
 def main():
-    choice = choice()
+    choice = choices()
     dict = inputs(choice)
     if (choice == 0):
         return bisection(dict)
