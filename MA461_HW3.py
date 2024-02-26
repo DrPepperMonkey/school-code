@@ -96,9 +96,9 @@ def graph(dict, guess: float):
     y = np.arange(100)
     for i in range(100):
         y[i] = dict[0].subs(t, x[i])
-    plt.plot(x, y)
-    plt.plot(guess, (dict[0].subs(t, guess)), '.')
-    plt.text(15, 25, 'local minimizer at (' + str(guess) + ', ' + str(dict[0].subs(t, guess)) + ')')
+    plt.plot(x, y, label= str(dict[0]))
+    plt.plot(guess, (dict[0].subs(t, guess)), '.', label='Local Minimizer')
+    plt.legend()
     plt.show()
 
 
