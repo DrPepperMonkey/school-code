@@ -1,6 +1,7 @@
 from sympy import *
 from matplotlib import pyplot as plt
 import numpy as np
+import math
 
 #Provides user with an interface to choose between three options.
 #Returns an int for future use
@@ -16,9 +17,9 @@ def inputs(choice: int):
         print('Input function.')
         i1 = sympify(input())
         print('Input lower bound.')
-        i2 = float(input())
+        i2 = sympify(input()).evalf()
         print('Input uperbound.')
-        i3 = float(input())
+        i3 = sympify(input()).evalf()
         print('Input accuracy to nearest decimal.')
         i4 = int(input())
         n = 0
@@ -52,16 +53,21 @@ def inputs(choice: int):
 def bisection(dict):
     x = symbols('x')
     guess = (dict[1] + dict[2]) / 2
-    if ((abs(diff(dict[0]).subs(x, guess))) < (10**(- dict[3]))):
-        return (guess, dict[0].subs(x, guess), dict[4])
+    if (dict[0].subs(x, dict[1]) < dict[0].subs(x, guess)):
+        return (round(dict[1], 3), round(dict[0].subs(x, dict[1]), 3), 0)
+    elif (dict[0].subs(x, dict[2]) < dict[0].subs(x, guess)):
+        return (round(dict[2], 3), round(dict[0].subs(x, dict[2]), 3), 0)
     else:
-        dict[4] = dict[4] + 1
-        if ((diff(dict[0]).subs(x, guess)) < 0):
-            dict[1] = guess
-            return bisection(dict)
+        if ((abs(diff(dict[0]).subs(x, guess))) < (10**(- dict[3]))):
+            return (round(guess, 3), round(dict[0].subs(x, guess), 3), dict[4])
         else:
-            dict[2] = guess
-            return bisection(dict)
+            dict[4] = dict[4] + 1
+            if ((diff(dict[0]).subs(x, guess)) < 0):
+                dict[1] = guess
+                return bisection(dict)
+            else:
+                dict[2] = guess
+                return bisection(dict)
     
 #Option 1
 #Approximates the y value of lowest point via Newton's method.
@@ -97,7 +103,11 @@ def graph(dict, guess: float):
     for i in range(100):
         y[i] = dict[0].subs(t, x[i])
     plt.plot(x, y, label= str(dict[0]))
-    plt.plot(guess, (dict[0].subs(t, guess)), '.', label='Local Minimizer')
+    xRound = str(guess)
+    yRound = str(round((dict[0].subs(t,guess)), 3))
+    plt.plot(guess, (dict[0].subs(t, guess)), '.', 
+             label='Local Minimizer ' + '(' + xRound + ',' 
+             + yRound + ')')
     plt.legend()
     plt.show()
 
