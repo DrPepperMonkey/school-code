@@ -3,23 +3,35 @@ import java.util.HashMap;
 
 public abstract class Organism {
     private HashMap<String, String> classification;
+    private HashMap<String, Boolean> attributes;
 
-    public Organism(String[] nameIn){
+    public Organism(){
+        classification = new HashMap<>();
+        attributes = new HashMap<>();
         String[] categories = {"domain", "kingdom", "phylum", "class", 
             "order", "family", "genus", "species"};
         for (int i = 0; i < 8; i++) {
-            this.classification.put(categories[i], nameIn[i]);
+            this.classification.put(categories[i], null);
         }
     }
 
-    public abstract String toString();
+    public abstract void summary();
 
     public void changeKey(String catIn, String newVal) {
         if (this.classification.containsKey(catIn)) {
             this.classification.put(catIn, newVal);
         }
-        else {
-            System.out.println("Please choose from the following");
-        }
+    }
+
+    public void addAttribute(String key, Boolean value) {
+        attributes.put(key, value);
+    }
+
+    public HashMap<String, Boolean> getAttributes() {
+        return this.attributes;
+    }
+
+    public HashMap<String, String> getClassification() {
+        return this.classification;
     }
 }
