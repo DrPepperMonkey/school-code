@@ -3,7 +3,7 @@ import numpy as np
 import time
 import math
 import sys
-from node import Node
+from node2 import Node
 import csv
 
 sys.setrecursionlimit(100000)
@@ -15,7 +15,6 @@ class BST:
 
     def __init__(self):
         self.root = None
-        self.array = [None]
     
     #(1): TREE INSERT
     '''
@@ -23,9 +22,21 @@ class BST:
     @params: z - Node object to be inserted
     '''
     def treeInsert(self, Tree, z):
-        if Tree.treeSearch(0[0],z[0]) == None:
-            ...
-
+        x = Tree.root
+        y = None
+        while x != None:
+            y = x
+            if z.key < x.key:
+                x = x.left
+            else:
+                x = x.right
+        z.pred = y
+        if Tree.root == None:
+            Tree.root = z
+        elif z.key < y.key:
+            y.left = z
+        else:
+            y.right = z
         
 
 
@@ -34,19 +45,23 @@ class BST:
     # prints the elements (keys) of the BST in an in-order format (correct = sorted)
     # x = starting node
     def inOrderTraversal(self, x):
-        pass
+        if x != None:
+            print(self.inOrderTraversal(x.left))
+            print(x)
+            print(self.inOrderTraversal(x.right))
+        
+        
 
     #(3): TREE SEARCH
     # x = starting node
     # k = key you are searching for
     def treeSearch(self, x, k):
-        if self.array[x] == k:
+        if x.key == k or x == None:
             return x
-        elif self.array[x] < k:
-            self.treeSearch((2*x)+1, k)
-        elif self.array[x] > k:
-            self.treeSearch((2*x)+2, k)
-        return None
+        elif k < x.key:
+            return self.treeSearch(x.left, k)
+        else:
+            return self.treeSearch(x.right, k)
         pass # returns the node with the corresponding key = k
 
 '''
@@ -56,13 +71,15 @@ class BST:
 #(4)TODO: edit the below function new_BST so that it reads a .csv file, and creates a BST using the .csv file data
 # DO NOT change what has already been written
 def new_BST(file_name):
+    tree = BST()
     with open(file_name, 'r') as file:
         csv_file = csv.reader(file)
-        tree = BST()
         for row in csv_file:
             key = int(row[0])
             value = row[1] + " : " + row[2]
-    return -1
+            z = Node(key,value)
+            tree.treeInsert(tree,z)
+    return tree
 
 ############# DO NOT MODIFY CODE BELOW THIS LINE #############
 
