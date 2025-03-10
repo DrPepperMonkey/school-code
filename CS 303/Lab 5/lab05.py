@@ -47,7 +47,7 @@ class BST:
     def inOrderTraversal(self, x):
         if x != None:
             print(self.inOrderTraversal(x.left))
-            print(x)
+            print(x.key)
             print(self.inOrderTraversal(x.right))
         
         
